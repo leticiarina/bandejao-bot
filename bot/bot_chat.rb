@@ -23,7 +23,12 @@ class Bot
       end
 
       unless restaurants
-        user = User.find message.from.id
+        s = Schedule.find_by_chat_id message.chat.id
+        if message.chat.type != 'private' && s
+          user = User.find s.user_id
+        else
+          user = User.find message.from.id
+        end
         restaurants = user.restaurants
       end
 
